@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { checkAuth } from '../../lib/authCheck'
 import { Set401 } from '../../lib/responseHelpers';
 import { createHmac } from "crypto";
+import getRawBody from "raw-body"
 
 type Data = {
   hash: string,
@@ -16,7 +17,7 @@ export const config = {
   }
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
@@ -29,8 +30,14 @@ export default function handler(
 
   // return res.status(200).json({ name: 'John Doe' });
 
-  const rawBody = req.body
+  // console.log('REQ', req);
+
+  const rawBody = await getRawBody(req);
   console.log('RAWBODY', rawBody)
+  
+  const jsonBody = rawBody.toJSON();
+  console.log('JSON', jsonBody)
+
   const secret = 'james'
   const signature = req?.headers?.['x-wc-webhook-signature']
   console.log('SIGNATURE', signature)
