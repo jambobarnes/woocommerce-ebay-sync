@@ -1,4 +1,4 @@
-import { Set401 } from "./responseHelpers";
+import { createHmac } from "crypto";
 
 export const checkAuth = (providedKey: string | undefined): boolean => {
 
@@ -9,5 +9,18 @@ export const checkAuth = (providedKey: string | undefined): boolean => {
   } else {
     return false
   }
+
+}
+
+export const checkSignature = (payload: any, signature: string): boolean => {
+
+  // set woocommerce endpoint secret
+  const secret: string = process.env.WC_WEBHOOK_SIGNATURE || 'james'
+
+  const hash = createHmac('sha256', secret).update(payload).digest("base64");
+
+  const match = hash === signature ? true : false
+
+  return match
 
 }
