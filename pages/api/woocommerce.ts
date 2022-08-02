@@ -44,6 +44,8 @@ export default async function handler(
     // send json body to be processed by WC service
     const event: string = req?.headers?.['x-wc-webhook-topic']?.toString() || ''
 
+    console.log(`WC webhook received: ${event}`)
+
     return Set202(res);
 
   }
