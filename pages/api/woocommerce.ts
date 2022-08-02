@@ -23,6 +23,7 @@ export default async function handler(
 
   // check if WC is sending a webhook id (happens after webhook is created or updated)
   if (req.headers['content-type'] === "application/x-www-form-urlencoded") {
+    console.log('WC webhook checked in')
     return Set202(res)
   }
 
